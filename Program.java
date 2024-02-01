@@ -9,14 +9,13 @@ public class Program {
 	public static void main(String[] args) {
 
 		String filePath = "/mnt/SSD-1TB/Workspaces-Programacao/ws-eclipse/curso_programacao/src/arquivos/in.txt";
-		FileReader fileReader = null;
-		BufferedReader bufferedReader = null;
+		/*
+		 * // Declaração fica obsoleta com uso de "try with resources": FileReader
+		 * fileReader = null; BufferedReader bufferedReader = null;
+		 */
 
-		try {
-			fileReader = new FileReader(filePath);
-			// BufferedReader é instanciado a partir de um FileReader:
-			bufferedReader = new BufferedReader(fileReader);
-
+		// Bloco "try with resources":
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
 			String line = bufferedReader.readLine();
 
 			while (line != null) {
@@ -25,32 +24,25 @@ public class Program {
 			}
 		} catch (IOException e) {
 			System.out.println("Error: " + e.getMessage());
-		} finally {
-			try {
-				if (bufferedReader != null) {
-					bufferedReader.close();
-				}
-				if (fileReader != null) {
-					fileReader.close();
-				}
-			}
-
-			catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 		
-			// Classe "File" permite acessar um arquivo e suas propriedades:
-			/*
-			  File file = new File(
-			  "/mnt/SSD-1TB/Workspaces-Programacao/ws-eclipse/curso_programacao/src/arquivos/in.txt"
-			  ); Scanner sc = null; try
-			  {
-			  sc = new Scanner(file); while (sc.hasNextLine()) {
-			  System.out.println(sc.nextLine()); } } catch (IOException e) {
-			  System.out.println("Error: " + e.getMessage()); } finally { if (sc != null) {
-			  sc.close(); } }
-			*/
-			 
+		// Bloco finally obsoleto com try with resources:
+		/*
+		 * finally { try { if (bufferedReader != null) { bufferedReader.close(); } if
+		 * (fileReader != null) { fileReader.close(); } }
+		 * 
+		 * catch (IOException e) { e.printStackTrace(); } }
+		 */
+
+		// Classe "File" permite acessar um arquivo e suas propriedades:
+		/*
+		 * File file = new File(
+		 * "/mnt/SSD-1TB/Workspaces-Programacao/ws-eclipse/curso_programacao/src/arquivos/in.txt"
+		 * ); Scanner sc = null; try { sc = new Scanner(file); while (sc.hasNextLine())
+		 * { System.out.println(sc.nextLine()); } } catch (IOException e) {
+		 * System.out.println("Error: " + e.getMessage()); } finally { if (sc != null) {
+		 * sc.close(); } }
+		 */
+
 	}
 }
