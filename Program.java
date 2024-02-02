@@ -1,28 +1,50 @@
 package arquivos;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.File;
+import java.util.Scanner;
 
 public class Program {
 
 	public static void main(String[] args) {
 
-		String[] fileLines = new String[] { "Good morning", "Good afternoon", "Good night" };
-
-		String filePath = "/mnt/SSD-1TB/Workspaces-Programacao/ws-eclipse/curso_programacao/src/arquivos/out.txt";
+		Scanner sc = new Scanner(System.in);
 		
-		// Objeto FileWriter sem o segundo parâmetro com valor true RECRIA o arquivo
-		// ao invés de acrescentar informação no mesmo (aqui acrescenta):
-		try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true))) {
-			for (String fileLine : fileLines) {
-				bufferedWriter.write(fileLine);
-				bufferedWriter.newLine();
-			}
+		System.out.print("Enter a folder path: ");
+		String stringPath = sc.nextLine();
+		
+		// Um objeto File pode apontar tanto para um arquivo quanto para uma pasta:
+		File filePath = new File(stringPath);
+		
+		/*
+		 *  Método listFiles() recebe filtro de busca como parâmetro.
+		 *	"File::isDirectory é uma função que filtra pastas:
+		 */
+		File[] foldersInPath = filePath.listFiles(File::isDirectory);
+		
+		System.out.println("FOLDERS IN THE TYPED PATH:");
+		System.out.println();
+		for (File folder : foldersInPath) {
+			System.out.println(folder);
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+		
+		System.out.println();
+		System.out.println("--------------");
+		System.out.println();
+		
+		File[] filesInPath = filePath.listFiles(File::isFile);
+		
+		System.out.println("FILES IN THE TYPED PATH:");
+		System.out.println();
+		for (File file : filesInPath) {
+			System.out.println(file);
 		}
+		
+		System.out.println();
+		boolean successfulFolderCreation = new File(stringPath + "/teste").mkdir();
+		System.out.println("Directory created successfully: " + successfulFolderCreation);
+		System.out.println("PATH OF NEW FOLDER: " + stringPath + "/teste");
+		
+		sc.close();
 		
 	}
 }
